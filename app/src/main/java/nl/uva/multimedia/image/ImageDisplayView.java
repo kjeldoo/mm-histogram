@@ -11,6 +11,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
+import android.graphics.Paint;
+import android.graphics.Color;
 
 /*
  * This is a View that displays incoming images.
@@ -53,6 +55,7 @@ public class ImageDisplayView extends View implements ImageListener {
         // TODO: Hier wordt een afbeelding op het scherm laten zien!
         // Je zou hier dus code kunnen plaatsen om iets anders weer te geven.
 
+
         /* If there is an image to be drawn: */
         if (this.currentImage != null) {
             /* Center the image... */
@@ -62,6 +65,44 @@ public class ImageDisplayView extends View implements ImageListener {
             /* ...and draw it. */
             canvas.drawBitmap(this.currentImage, 0, this.imageWidth, left, top, this.imageWidth,
                     this.imageHeight, true, null);
+
+            int g_sum = 0;
+            int[] g_values = new int[256];
+
+            int g_max = 0;
+            int mode = 0;
+
+            for(int i = 0; i < this.currentImage.length - 1; i++) {
+                g_sum += 0xFF & (this.currentImage[i] >> 8);
+
+                if(++g_values[0xFF & (this.currentImage[i] >> 8)] > g_max) {
+                    g_max = g_values[0xFF & (this.currentImage[i] >> 8)];
+                    mode = 0xFF & (this.currentImage[i] >> 8);
+                }
+            }
+
+            int mean = g_sum / this.currentImage.length;
+
+            int median = 0;
+            int g_counter = 0;
+
+            for(int j = 0; j < 255; j++) {
+                g_counter += g_values[j];
+                if(g_counter > Math.floor(this.currentImage.length / 2)) {
+                    median = j;
+                    break;
+                }
+            }
+
+            Paint paint = new Paint();
+
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(40);
+            canvas.drawText("Mean: " + mean, 10, 45, paint);
+            canvas.drawText("Median: " + median, 10, 85, paint);
+            canvas.drawText("Mode: " + mode, 10, 125, paint);
+
+
         }
     }
 

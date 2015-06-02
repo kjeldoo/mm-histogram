@@ -97,7 +97,7 @@ public class ImageActivity extends Activity {
         });
 
         /* Select the back camera as default source: */
-        sourceSpinner.setSelection(SOURCE_BACK_CAMERA);
+        sourceSpinner.setSelection(SOURCE_FRONT_CAMERA);
     }
 
     private void switchToCamera() {
