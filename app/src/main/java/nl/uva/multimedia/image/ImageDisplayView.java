@@ -54,47 +54,76 @@ public class ImageDisplayView extends View implements ImageListener {
 
         // TODO: Hier wordt een afbeelding op het scherm laten zien!
         // Je zou hier dus code kunnen plaatsen om iets anders weer te geven.
+        // Dat hebben we net gedaan
 
 
         /* If there is an image to be drawn: */
         if (this.currentImage != null) {
-            /* Center the image... */
-            int left = (this.getWidth() - this.imageWidth) / 2;
-            int top = (this.getHeight() - this.imageHeight) / 2;
+            /* r=16, g=8, b=0*/
+            int color = 16;
 
-            /* ...and draw it. */
-            canvas.drawBitmap(this.currentImage, 0, this.imageWidth, left, top, this.imageWidth,
-                    this.imageHeight, true, null);
+            int color_sum = 0;
+            int[] color_values = new int[256];
 
-            int g_sum = 0;
-            int[] g_values = new int[256];
-
-            int g_max = 0;
+            int color_max = 0;
             int mode = 0;
 
-            for(int i = 0; i < this.currentImage.length - 1; i++) {
-                g_sum += 0xFF & (this.currentImage[i] >> 8);
 
-                if(++g_values[0xFF & (this.currentImage[i] >> 8)] > g_max) {
-                    g_max = g_values[0xFF & (this.currentImage[i] >> 8)];
-                    mode = 0xFF & (this.currentImage[i] >> 8);
+            /* Build an array of the green values */
+            for(int i = 0; i < this.currentImage.length - 1; i++) {
+                color_sum += 0xFF & (this.currentImage[i] >> color);
+
+                if(++color_values[0xFF & (this.currentImage[i] >> color)] > color_max) {
+                    color_max = color_values[0xFF & (this.currentImage[i] >> color)];
+                    mode = 0xFF & (this.currentImage[i] >> color);
                 }
             }
 
-            int mean = g_sum / this.currentImage.length;
+            int mean = color_sum / this.currentImage.length;
 
             int median = 0;
-            int g_counter = 0;
-
-            for(int j = 0; j < 255; j++) {
-                g_counter += g_values[j];
-                if(g_counter > Math.floor(this.currentImage.length / 2)) {
-                    median = j;
-                    break;
-                }
-            }
+            int color_counter = 0;
 
             Paint paint = new Paint();
+            switch (color) {
+                case 0:
+                    paint.setColor(Color.BLUE);
+                    break;
+                case 8:
+                    paint.setColor(Color.GREEN);
+                    break;
+                case 16:
+                    paint.setColor(Color.RED);
+                    break;
+            }
+
+
+            int bins = 256;
+            int binvalue = 0;
+
+            int binHeight;
+            int binWidth = 256 / bins;
+
+            int drawWidth = this.imageWidth/bins;
+            float drawHeight = color_values[mode]/this.imageHeight;
+
+            for(int j = 0; j <= 255; j++) {
+                color_counter += color_values[j];
+                if(color_counter > Math.floor(this.currentImage.length / 2) && median ==0) {
+                    median = j;
+                }
+
+                /*imHeight is the height of the histogram*/
+                binvalue += color_values[j];
+                if ((j+1) % binWidth == 0 ) {
+                    binvalue/=binWidth;
+                    binHeight = this.imageHeight-(int)(binvalue/drawHeight);
+                    canvas.drawRect((float)((j+1)/binWidth-1)*drawWidth,(float)binHeight,(float)(j+1)/binWidth*drawWidth,(float)this.imageHeight,paint);
+                    binvalue=0;
+                }
+
+            }
+
 
             paint.setColor(Color.BLACK);
             paint.setTextSize(40);
