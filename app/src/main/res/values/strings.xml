@@ -12,6 +12,12 @@
         <item>Microphone</item>
     </string-array>
 
+    <string-array name="colorOptions">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+    </string-array>
+
     <string name="play_icon">▶</string>
     <string name="pause_icon">❘❘</string>
     <string name="rewind_icon">◀◀</string>

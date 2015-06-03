@@ -14,6 +14,8 @@ import android.view.View;
 import android.graphics.Paint;
 import android.graphics.Color;
 import android.widget.SeekBar;
+import android.widget.Spinner;
+
 
 /*
  * This is a View that displays incoming images.
@@ -21,6 +23,8 @@ import android.widget.SeekBar;
 public class ImageDisplayView extends View implements ImageListener {
 
     public static SeekBar seekBar = null;
+    public static Spinner colorSpinner = null;
+
 
     /*** Constructors ***/
 
@@ -62,8 +66,28 @@ public class ImageDisplayView extends View implements ImageListener {
 
         /* If there is an image to be drawn: */
         if (this.currentImage != null) {
+
+
+            int left = (this.getWidth() - this.imageWidth) / 2;
+            int top = (this.getHeight() - this.imageHeight) / 2 + 20;
+
+            /* ...and draw it. */
+            canvas.drawBitmap(this.currentImage, 0, this.imageWidth, left, top, this.imageWidth,
+                    this.imageHeight, true, null);
+
+
             /* r=16, g=8, b=0*/
             int color = 16;
+
+            String val = colorSpinner.getSelectedItem().toString();
+
+                if(val.equals("Red"))
+                    color = 16;
+                else if(val.equals("Blue"))
+                    color = 0;
+                else if(val.equals("Green"))
+                    color = 8;
+
 
             int color_sum = 0;
             int[] color_values = new int[256];
@@ -133,6 +157,8 @@ public class ImageDisplayView extends View implements ImageListener {
             canvas.drawText("Mean: " + mean, 10, 45, paint);
             canvas.drawText("Median: " + median, 10, 85, paint);
             canvas.drawText("Mode: " + mode, 10, 125, paint);
+            canvas.drawText("Color: " + val, 10, 145, paint);
+
 
 
         }

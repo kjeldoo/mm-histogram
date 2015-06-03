@@ -21,6 +21,13 @@
         android:layout_width="match_parent"
         android:layout_weight="1" />
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/color_spinner"
+        android:entries="@array/colorOptions"
+        android:longClickable="true" />
+
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +52,7 @@
             android:layout_marginRight="5dp"
             android:drawSelectorOnTop="true"
             android:entries="@array/imageSources"
-        />
+            android:focusable="true" />
 
         <Button
             android:id="@+id/load_image_button"

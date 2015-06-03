@@ -51,8 +51,9 @@ public class ImageActivity extends Activity {
         this.cis = new CameraImageSource(this);
         this.fis = new FileImageSource();
 
-        /* Init seekbar */
+        /* Init seekbar & color spinner */
         ImageDisplayView.seekBar = (SeekBar) findViewById(R.id.seekBar);
+        ImageDisplayView.colorSpinner = (Spinner) findViewById(R.id.color_spinner);
 
         Spinner sourceSpinner = (Spinner)this.findViewById(R.id.source_spinner);
 
