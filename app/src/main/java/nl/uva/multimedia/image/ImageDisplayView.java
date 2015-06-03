@@ -13,11 +13,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.graphics.Paint;
 import android.graphics.Color;
+import android.widget.SeekBar;
 
 /*
  * This is a View that displays incoming images.
  */
 public class ImageDisplayView extends View implements ImageListener {
+
+    public static SeekBar seekBar = null;
 
     /*** Constructors ***/
 
@@ -98,7 +101,7 @@ public class ImageDisplayView extends View implements ImageListener {
             }
 
 
-            int bins = 256;
+            int bins = (int) Math.pow(2, seekBar.getProgress());
             int binvalue = 0;
 
             int binHeight;

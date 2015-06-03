@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.SeekBar;
 
 import java.io.FileNotFoundException;
 
@@ -34,6 +35,7 @@ public class ImageActivity extends Activity {
 
     private CameraImageSource cis;
     private FileImageSource fis;
+    private SeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class ImageActivity extends Activity {
         /* Create sources: */
         this.cis = new CameraImageSource(this);
         this.fis = new FileImageSource();
+
+        /* Init seekbar */
+        ImageDisplayView.seekBar = (SeekBar) findViewById(R.id.seekBar);
 
         Spinner sourceSpinner = (Spinner)this.findViewById(R.id.source_spinner);
 
