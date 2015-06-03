@@ -157,7 +157,7 @@ public class ImageDisplayView extends View implements ImageListener {
             canvas.drawText("Mean: " + mean, 10, 45, paint);
             canvas.drawText("Median: " + median, 10, 85, paint);
             canvas.drawText("Mode: " + mode, 10, 125, paint);
-            canvas.drawText("Color: " + val, 10, 145, paint);
+            canvas.drawText("Color: " + val, 10, 165, paint);
 
 
 
