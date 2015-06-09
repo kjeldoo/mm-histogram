@@ -41,6 +41,8 @@ public class CameraImageSource implements ImageSource, Camera.PreviewCallback {
     private final Display display;
     private final Context context;
 
+    private int[] frozenImage = null;
+
     public CameraImageSource(Context context) {
         int numCameras = Camera.getNumberOfCameras();
 
@@ -121,7 +123,6 @@ public class CameraImageSource implements ImageSource, Camera.PreviewCallback {
     }
 
     private boolean frozen = false;
-
     public void setFrozen(boolean frozen) {
         this.frozen = frozen;
     }
@@ -151,8 +152,14 @@ public class CameraImageSource implements ImageSource, Camera.PreviewCallback {
             break;
         }
 
-        if (!this.frozen && this.listener != null)
+        if (!this.frozen && this.listener != null) {
+            this.frozenImage = new int[numPixels];
+            System.arraycopy(this.currentImage, 0, this.frozenImage, 0, numPixels);
             this.listener.onImage(this.currentImage, this.imageWidth, this.imageHeight);
+        }
+        else if(this.listener != null) {
+            this.listener.onImage(this.frozenImage, this.imageWidth, this.imageHeight);
+        }
     }
 
     /*** YUV to RGB conversion ***/
